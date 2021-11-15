@@ -3,12 +3,14 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+
 let indexRouter = require('./routes/index');
 let weatherRouter = require('./routes/weather');
 
 let app = express();
 
 app.use(logger('dev'));
+console.log('helloooo');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

@@ -1,8 +1,17 @@
 let express = require('express');
 let router = express.Router();
+let https = require('https');
 
-router.get('/', function(req, res, next) {
-	res.send('respond with a resource');
+router.get('/places', function(req, res, next) {
+	https.get('https://api.meteo.lt/v1/places', response => {
+		let result = '';
+		response.on('data', function(data) {
+			result += data.toString();
+		});
+		response.on('end', function(data) {
+			res.send(result);
+		});
+	});
 });
 
 module.exports = router;
