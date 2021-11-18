@@ -4,7 +4,7 @@
   "main": "app.js",
   "scripts": {
     "server:start": "node ./bin/www",
-    "server:dev": "npx nodemon ./bin/www",
+    "server:dev": "npx cross-env NODE_ENV=dev nodemon ./bin/www",
 
     "assets:dev": "npm run assets:development",
     "assets:development": "mix",

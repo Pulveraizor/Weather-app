@@ -6,21 +6,25 @@
 
 	<link href="css/app.css" rel="stylesheet">
 
-	<title>Hello, world!</title>
+	<title>Weather</title>
 </head>
 <body>
-	<h1>Todays Weather</h1>
-	<div class="card">
-		<div class="card-header">Šiandien</div>
-		<div class="row card-body">
-			<div class="col-6" id="cities">
-				<select name="region" id="region"></select>
-				<select name="city" id="city"></select>
+	<h1>Orų prognozė</h1>
+	<div class="container">
+		<div class="card">
+			<div class="card-header">Šiandien <strong id="clock"></strong></div>
+			<div class="row card-body">
+				<div class="col-6" id="cities">
+					<select name="region" id="region">
+						<option value="all">-- Visos savivaldybės</option>
+					</select>
+					<select name="city" id="city"></select>
+				</div>
+				<div class="col-6" id="weather_result"></div>
 			</div>
-			<div class="col-6" id="weather_result"></div>
 		</div>
 	</div>
 
-	<script src="../app.js"></script>
+	<script src="js/app.js"></script>
 </body>
 </html>
