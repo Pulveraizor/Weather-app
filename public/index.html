@@ -5,22 +5,42 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<link href="css/app.css" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/a3a63cea0d.js" crossorigin="anonymous"></script>
 
 	<title>Weather</title>
 </head>
 <body>
-	<h1>Orų prognozė</h1>
 	<div class="container">
-		<div class="card">
-			<div class="card-header">Šiandien <strong id="clock"></strong></div>
-			<div class="row card-body">
-				<div class="col-6" id="cities">
-					<select name="region" id="region">
-						<option value="all">-- Visos savivaldybės</option>
-					</select>
-					<select name="city" id="city"></select>
+		<h1>Orų prognozė</h1>
+		<div class="container">
+			<div class="card">
+				<div class="card-header">
+					<h4>Šiandien <span id="date"></span></h4>
+					<div><strong class='clock' id="clock"></strong></div>
 				</div>
-				<div class="col-6" id="weather_result"></div>
+				<div class="row card-body">
+					<div class="col-12 col-md-6" id="cities">
+						<select class="form-select form-select-sm" name="region" id="region">
+							<option value="all">-- Pasirinkite savivaldybę</option>
+						</select>
+						<select class="form-select form-select-lg mb-3" name="city" id="city"></select>
+					</div>
+					<div class="col-12 col-md-6" id="weather_result">
+						<div id="carouselExampleFade" class="carousel slide" data-bs-ride="carousel">
+							<div class="carousel-inner">
+								<h4 id="dayOfForecast"></h4>
+							</div>
+							<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Previous</span>
+							</button>
+							<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Next</span>
+							</button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
