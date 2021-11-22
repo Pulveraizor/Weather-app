@@ -1,6 +1,7 @@
 docker-compose.yml
 node_modules
 
+.idea
 /public/hot
 /public/storage
 /public/js
