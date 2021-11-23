@@ -19,26 +19,36 @@
 					<div><strong class='clock' id="clock"></strong></div>
 				</div>
 				<div class="row card-body">
-					<div class="col-12 col-md-6" id="cities">
+					<div class="col-12" id="cities">
 						<select class="form-select form-select-sm" name="region" id="region">
 							<option value="all">-- Pasirinkite savivaldybę</option>
 						</select>
 						<select class="form-select form-select-lg mb-3" name="city" id="city"></select>
 					</div>
-					<div class="col-12 col-md-6" id="weather_result">
-						<div id="carouselExampleFade" class="carousel slide" data-bs-ride="carousel">
-							<div class="carousel-inner">
-								<h4 id="dayOfForecast"></h4>
+					<div class="row" id="weather_now"></div>
+					<div class="col-12" id="weather_result">
+							<div class="row headers">
+								<div class="col-4">
+									<h4>Vėliau šiandien</h4>
+								</div>
+								<div class="col-4">
+									<h4>Rytoj</h4>
+								</div>
+								<div class="col-4">
+									<h4>Poryt</h4>
+								</div>
 							</div>
-							<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-								<span class="visually-hidden">Previous</span>
-							</button>
-							<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-								<span class="carousel-control-next-icon" aria-hidden="true"></span>
-								<span class="visually-hidden">Next</span>
-							</button>
-						</div>
+							<div class="result_cards row">
+								<div class="col-4" id="later_today">
+
+								</div>
+								<div class="col-4" id="tomorrow">
+
+								</div>
+								<div class="col-4" id="after_tomorrow">
+
+								</div>
+							</div>
 					</div>
 				</div>
 			</div>

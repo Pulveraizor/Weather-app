@@ -28,22 +28,14 @@ setInterval(time,1000);
 document.addEventListener('DOMContentLoaded', function() {
     fetch('/weather/places').then(response => response.json()).then(data => {
 
-        for (let p of data) {
-            if (p.countryCode == 'LT') {
-                let city_option = document.createElement('option');
-                city_option.value = p.administrativeDivision;
-                city_option.innerText = p.name;
-                city_option.classList.add(p.code);
-                citySelect.appendChild(city_option);
-                city_option.style.display = 'none';
-            }
-        }
         let rObj = new Set();
         let filteredRegions = data.filter(el => {
             let duplicate = rObj.has(el.administrativeDivision);
             rObj.add(el.administrativeDivision);
             return !duplicate;
         });
+
+        filteredRegions.sort((a,b) => (a.administrativeDivision > b.administrativeDivision ? 1 : -1));
 
         for (let r of filteredRegions) {
             if (r.countryCode == 'LT') {
@@ -53,6 +45,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 regionSelect.appendChild(reg_option);
             }
         };
+
+        for (let p of data) {
+            if (p.countryCode == 'LT') {
+                let city_option = document.createElement('option');
+                city_option.value = p.administrativeDivision;
+                city_option.innerText = p.name;
+                city_option.classList.add(p.code);
+                citySelect.appendChild(city_option);
+            }
+        }
     });
 });
 
@@ -71,25 +73,24 @@ regionSelect.addEventListener('input', function() {
     }
 });
 
-
-function createNewCarouselItem(conditionCode, temperature, day, wind) {
+function createNewForecastItem(conditionCode, temperature, time, wind) {
     let newDiv = document.createElement('div');
-    newDiv.classList.add('carousel-item');
+    newDiv.classList.add('col-12');
     let newForecast = document.createElement('i');
     newForecast.classList.add('fas');
     newForecast.classList.add(conditionCode);
-    let newTemp = document.createElement('h1');
+    let forecastTime = document.createElement('div');
+    forecastTime.innerText = time;
+    let newTemp = document.createElement('div');
     newTemp.innerText = `${temperature}°C`;
-    let dayOfForecast = document.createElement('h4');
-    dayOfForecast.innerText = day;
     let windImage = document.createElement('div');
     windImage.classList.add('fas');
     windImage.classList.add('fa-wind');
-    let windSpeed = document.createElement('h5');
+    let windSpeed = document.createElement('span');
     windSpeed.innerText = `${wind} m/s`;
+    newDiv.appendChild(forecastTime);
     newDiv.appendChild(newForecast);
     newDiv.appendChild(newTemp);
-    newDiv.appendChild(dayOfForecast);
     newDiv.appendChild(windImage);
     newDiv.appendChild(windSpeed);
     return newDiv;
@@ -131,13 +132,19 @@ citySelect.addEventListener('input', function() {
     fetch(`./weather/places/${selection}`).
     then(response => response.json()).
     then(data => {
-        console.log(data.forecastTimestamps);
 
         let time = new Date;
         let currentDate = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`;
         let currentTime = `${time.getHours()}`;
-        let carousel = document.querySelector('.carousel-inner');
-        carousel.innerHTML = '';
+        let weatherNow = document.querySelector('#weather_now');
+        weatherNow.innerHTML = '';
+        let laterToday = document.querySelector('#later_today');
+        laterToday.innerHTML = '';
+        let tomorrow = document.querySelector('#tomorrow');
+        tomorrow.innerHTML = '';
+        let afterTomorrow = document.querySelector('#after_tomorrow');
+        afterTomorrow.innerHTML = '';
+
 
         for (let t of data.forecastTimestamps) {
 
@@ -148,19 +155,32 @@ citySelect.addEventListener('input', function() {
 
 
             if (currentDate == forecastTempDate && currentTime == forecastTempTime) {
-
-                carousel.appendChild(createNewCarouselItem(setWeatherPicture(t.conditionCode), t.airTemperature, 'Dabar', t.windGust));
-                let firstCarouselItem = document.querySelector('.carousel-inner > div');
-                firstCarouselItem.classList.add('active');
+                let weatherPicture = document.createElement('div');
+                weatherPicture.classList.add('fas');
+                weatherPicture.classList.add('col-6');
+                weatherPicture.classList.add(setWeatherPicture(t.conditionCode));
+                weatherPicture.classList.add('weatherPicture');
+                let currentTemp = document.createElement('div');
+                currentTemp.classList.add('col-6');
+                currentTemp.innerText = `${Number(t.airTemperature).toFixed(1)}°C`;
+                let windImage = document.createElement('div');
+                windImage.classList.add('fas');
+                windImage.classList.add('fa-wind');
+                weatherNow.appendChild(weatherPicture);
+                weatherNow.appendChild(currentTemp);
+                weatherNow.appendChild(windImage);
             }
             if (currentDate == forecastTempDate && currentTime < forecastTempTime) {
-                carousel.appendChild(createNewCarouselItem(setWeatherPicture(t.conditionCode), t.airTemperature, `Vėliau šiandien ${forecastDisplayTime}`, t.windGust));
+                laterToday.appendChild(createNewForecastItem(setWeatherPicture(t.conditionCode),
+                    Number(t.airTemperature).toFixed(1), forecastDisplayTime, t.windGust));
             }
             if (forecastTempDate.slice(8) == +currentDate.slice(8) + 1) {
-                carousel.appendChild(createNewCarouselItem(setWeatherPicture(t.conditionCode), t.airTemperature, `Rytoj ${forecastDisplayTime}`, t.windGust));
+                tomorrow.appendChild(createNewForecastItem(setWeatherPicture(t.conditionCode),
+                    Number(t.airTemperature).toFixed(1), forecastDisplayTime, t.windGust));
             }
             if (forecastTempDate.slice(8) == +currentDate.slice(8) + 2) {
-                carousel.appendChild(createNewCarouselItem(setWeatherPicture(t.conditionCode), t.airTemperature, `Poryt ${forecastDisplayTime}`, t.windGust));
+                afterTomorrow.appendChild(createNewForecastItem(setWeatherPicture(t.conditionCode),
+                    Number(t.airTemperature).toFixed(1), forecastDisplayTime, t.windGust));
             }
         };
     });

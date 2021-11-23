@@ -15,3 +15,9 @@ body {
 #region {
   margin-bottom: 10px;
 }
+.weatherPicture {
+  font-size: 100px;
+}
+#later_today > div, #tomorrow > div, #after_tomorrow > div{
+  border-bottom: solid gray 1px;
+}
