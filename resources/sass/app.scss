@@ -5,18 +5,28 @@ body {
 }
 .container {
   text-align: center;
+  max-width: 900px;
 }
 .clock {
   text-align: center;
 }
-.carousel-inner i{
-  font-size: 100px;
+.current-weather-box {
+  height: 150px;
+  text-align: center;
+  margin-bottom: 50px;
+  padding: 0 100px 0 100px;
+}
+#weather_now_stats {
+  text-align: center;
 }
 #region {
   margin-bottom: 10px;
 }
 .weatherPicture {
-  font-size: 100px;
+  font-size: 150px;
+}
+.popCities {
+  margin-bottom: 25px;
 }
 #later_today > div, #tomorrow > div, #after_tomorrow > div{
   border-bottom: solid gray 1px;

@@ -11,50 +11,58 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Orų prognozė</h1>
-		<div class="container">
-			<div class="card">
-				<div class="card-header">
-					<h4>Šiandien <span id="date"></span></h4>
-					<div><strong class='clock' id="clock"></strong></div>
+		<div class="card">
+			<div class="card-header">
+				<h4>Šiandien <span id="date"></span></h4>
+				<div><strong class='clock' id="clock"></strong></div>
+			</div>
+			<div class="row card-body">
+				<div class="col-12" id="cities">
+
+					<select class="form-select form-select-sm" name="region" id="region">
+						<option value="all">-- Pasirinkite savivaldybę</option>
+					</select>
+					<select class="form-select form-select-lg mb-3" name="city" id="city"></select>
 				</div>
-				<div class="row card-body">
-					<div class="col-12" id="cities">
-						<select class="form-select form-select-sm" name="region" id="region">
-							<option value="all">-- Pasirinkite savivaldybę</option>
-						</select>
-						<select class="form-select form-select-lg mb-3" name="city" id="city"></select>
+				<div class="row current-weather-box">
+					<div class="row">
+						<strong id="on_display"></strong>
 					</div>
-					<div class="row" id="weather_now"></div>
-					<div class="col-12" id="weather_result">
-							<div class="row headers">
-								<div class="col-4">
-									<h4>Vėliau šiandien</h4>
-								</div>
-								<div class="col-4">
-									<h4>Rytoj</h4>
-								</div>
-								<div class="col-4">
-									<h4>Poryt</h4>
-								</div>
-							</div>
-							<div class="result_cards row">
-								<div class="col-4" id="later_today">
-
-								</div>
-								<div class="col-4" id="tomorrow">
-
-								</div>
-								<div class="col-4" id="after_tomorrow">
-
-								</div>
-							</div>
+					<div class="col-6" id="weather_now"></div>
+					<div class="col-6" id="weather_now_stats">
+						<h1 id="current_temp"></h1>
+						<span id="wind"></span>
+						<span id="wind_speed"></span>
+						<p id="humidity"></p>
 					</div>
+				</div>
+				<div class="col-12" id="weather_result">
+						<div class="row headers">
+							<div class="col-4">
+								<h4>Vėliau šiandien</h4>
+							</div>
+							<div class="col-4">
+								<h4>Rytoj</h4>
+							</div>
+							<div class="col-4">
+								<h4>Poryt</h4>
+							</div>
+						</div>
+						<div class="result_cards row">
+							<div class="col-4" id="later_today">
+
+							</div>
+							<div class="col-4" id="tomorrow">
+
+							</div>
+							<div class="col-4" id="after_tomorrow">
+
+							</div>
+						</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 	<script src="js/app.js"></script>
 </body>
 </html>

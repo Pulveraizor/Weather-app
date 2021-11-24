@@ -1,31 +1,7 @@
-window.axios = require('axios');
-window.bootstrap = require('bootstrap');
-
 let regionSelect = document.querySelector('#region');
 let citySelect = document.querySelector('#city');
 
-function getDoubleDigit(a) {
-    if (a < 10) {
-        return `0${a}`;
-    } else {
-        return a;
-    }
-}
-
-function time(){
-    let d = new Date();
-    let s = d.getSeconds();
-    let m = d.getMinutes();
-    let h = d.getHours();
-
-    document.querySelector('#clock').innerText = `${getDoubleDigit(h)}:${getDoubleDigit(m)}:${getDoubleDigit(s)}`;
-    document.querySelector('#date').innerText = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
-
-};
-
-setInterval(time,1000);
-
-document.addEventListener('DOMContentLoaded', function() {
+function getFilteredLocations() {
     fetch('/weather/places').then(response => response.json()).then(data => {
 
         let rObj = new Set();
@@ -55,31 +31,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 citySelect.appendChild(city_option);
             }
         }
+        let defaultCity = document.querySelector('.klaipeda');
+        defaultCity.setAttribute('selected', '');
+        getWeatherResult();
     });
-});
+};
 
+document.addEventListener('DOMContentLoaded', getFilteredLocations);
 
-regionSelect.addEventListener('input', function() {
-    let cities = document.querySelectorAll('#city > *');
-    for (let i of cities) {
-        if (i.value != this.value) {
-            i.style.display = 'none';
-            citySelect.value = null;
-        } else if (this.value == '-- Pasirinkite savivaldybę') {
-            i.style.display = 'block';
-        } else  {
-            i.style.display = 'block';
-        }
+function getDoubleDigit(a) {
+    if (a < 10) {
+        return `0${a}`;
+    } else {
+        return a;
     }
-});
+};
+
+function time(){
+    let d = new Date();
+    let s = d.getSeconds();
+    let m = d.getMinutes();
+    let h = d.getHours();
+
+    document.querySelector('#clock').innerText = `${getDoubleDigit(h)}:${getDoubleDigit(m)}:${getDoubleDigit(s)}`;
+    document.querySelector('#date').innerText = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+
+};
+
+setInterval(time,1000);
 
 function createNewForecastItem(conditionCode, temperature, time, wind) {
     let newDiv = document.createElement('div');
     newDiv.classList.add('col-12');
-    let newForecast = document.createElement('i');
+    let newForecast = document.createElement('div');
     newForecast.classList.add('fas');
     newForecast.classList.add(conditionCode);
-    let forecastTime = document.createElement('div');
+    let forecastTime = document.createElement('small');
     forecastTime.innerText = time;
     let newTemp = document.createElement('div');
     newTemp.innerText = `${temperature}°C`;
@@ -87,9 +74,9 @@ function createNewForecastItem(conditionCode, temperature, time, wind) {
     windImage.classList.add('fas');
     windImage.classList.add('fa-wind');
     let windSpeed = document.createElement('span');
-    windSpeed.innerText = `${wind} m/s`;
-    newDiv.appendChild(forecastTime);
+    windSpeed.innerText = ` ${wind} m/s`;
     newDiv.appendChild(newForecast);
+    newDiv.appendChild(forecastTime);
     newDiv.appendChild(newTemp);
     newDiv.appendChild(windImage);
     newDiv.appendChild(windSpeed);
@@ -126,7 +113,7 @@ function setWeatherPicture(conditionCode) {
     }
 };
 
-citySelect.addEventListener('input', function() {
+function getWeatherResult() {
     let selection = citySelect.options[citySelect.selectedIndex].className;
 
     fetch(`./weather/places/${selection}`).
@@ -153,22 +140,24 @@ citySelect.addEventListener('input', function() {
             let forecastDisplayTime = Array.from(t.forecastTimeUtc).slice(11).splice(0, 5).join('');
 
 
-
             if (currentDate == forecastTempDate && currentTime == forecastTempTime) {
-                let weatherPicture = document.createElement('div');
+                let weatherPicture = document.querySelector('#weather_now');
                 weatherPicture.classList.add('fas');
                 weatherPicture.classList.add('col-6');
                 weatherPicture.classList.add(setWeatherPicture(t.conditionCode));
                 weatherPicture.classList.add('weatherPicture');
-                let currentTemp = document.createElement('div');
+                let currentTemp = document.querySelector('#current_temp');
                 currentTemp.classList.add('col-6');
                 currentTemp.innerText = `${Number(t.airTemperature).toFixed(1)}°C`;
-                let windImage = document.createElement('div');
+                let windImage = document.querySelector('#wind');
                 windImage.classList.add('fas');
                 windImage.classList.add('fa-wind');
-                weatherNow.appendChild(weatherPicture);
-                weatherNow.appendChild(currentTemp);
-                weatherNow.appendChild(windImage);
+                let windSpeed = document.querySelector('#wind_speed');
+                windSpeed.innerText = `${t.windGust} m/s`;
+                let humidity = document.querySelector('#humidity');
+                humidity.innerText = `Drėgmė: ${t.relativeHumidity}%`;
+                let onDisplay = document.querySelector('#on_display');
+                onDisplay.innerText = `Šiuo metu: ${citySelect.options[citySelect.selectedIndex].innerText}`;
             }
             if (currentDate == forecastTempDate && currentTime < forecastTempTime) {
                 laterToday.appendChild(createNewForecastItem(setWeatherPicture(t.conditionCode),
@@ -184,4 +173,20 @@ citySelect.addEventListener('input', function() {
             }
         };
     });
+};
+
+regionSelect.addEventListener('input', function() {
+    let cities = document.querySelectorAll('#city > *');
+    for (let i of cities) {
+        if (i.value != this.value) {
+            i.style.display = 'none';
+            citySelect.value = null;
+        } else if (this.value == '-- Pasirinkite savivaldybę') {
+            i.style.display = 'block';
+        } else  {
+            i.style.display = 'block';
+        }
+    }
 });
+
+citySelect.addEventListener('input', getWeatherResult);

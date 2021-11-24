@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nonamez/fs2-5.git"
+    "url": "https://github.com/Pulveraizor/weather.git"
   },
-  "author": "hello@nonamez.name",
+  "author": "benas.juskus@gmail.com",
   "license": "Beerware",
   "bugs": {
-    "url": "https://github.com/nonamez/fs2-5/issues"
+    "url": "https://github.com/Pulveraizor/weather/issues"
   },
-  "homepage": "https://github.com/nonamez/fs2-5#readme",
+  "homepage": "https://github.com/Pulveraizor/weather#readme",
   "dependencies": {
     "axios": "^0.24.0",
     "bootstrap": "^5.1.1",
